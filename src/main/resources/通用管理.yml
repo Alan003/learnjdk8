@@ -1,0 +1,386 @@
+title: 通用管理流程变量定义
+type: object
+properties:
+  start_node: Task_1yffhhu
+  save_path: https://nqi.gmcc.net:20443/dev-wfm-biz-server/supervise
+  engine_variables:
+    title: 流程引擎变量
+    type: object
+    properties:
+      id:
+        title: 工单ID
+        type: string
+      code:
+        title: 通告公文号
+        type: string
+      is_audit:
+        title: 审核选择
+        type: number
+      superintendent_1:
+        title: 处理对象
+        type: array
+      reviewers:
+        title: 抄送对象
+        type: array
+      auditor_1:
+        title: 审核对象
+        type: string
+      approval_result_1:
+        title: 一级审核结果
+        type: number
+      auditor_2:
+        title: 二级审核人
+        type: string
+      approval_result_2:
+        title: 二级审核结果
+        type: number
+      supervise_result_1:
+        title: 一级处理结果
+        type: number
+      superintendent_2:
+        title: 转派
+        type: string
+      supervise_result_2:
+        title: 二级处理结果
+        type: number
+      supervise_result_3:
+        title: 三级处理结果
+        type: number
+      superintendent_3:
+        title: 转派
+        type: string
+      supervise_approval_result_1:
+        title: 一级处理人审核结果
+        type: number
+      supervise_approval_result_2:
+        title: 二级处理人审核结果
+        type: number
+      confirm:
+        title: 确认结果
+        type: number
+      comment:
+        title: 处理意见
+        type: string
+      attachments:
+        title: 附件
+        type: array
+      title:
+        title: 工单标题
+        type: string
+      content:
+        title: 工单内容
+        type: string
+      processLimited:
+        title: 处理时限
+        type: string
+      type:
+        title: 处理类型
+        type: string
+      data:
+        title: 数据
+        type: file
+      files:
+        title: 附件
+        type: file
+      mustUploadAttachment:
+        title: 处理是否要上传附件
+        type: number
+  ui_groups:
+    ui_view:
+      title: 工单详情
+      controls:
+        code:
+          ui:
+            widget: text-view
+        title:
+          ui:
+            widget: text-view
+        content:
+          ui:
+            widget: text-view
+        processLimited:
+          ui:
+            widget: text-view
+        data:
+          ui:
+            widget: supervise-data-view
+        files:
+          ui:
+            widget: attachment-view
+        mustUploadAttachment:
+          ui:
+            widget: text-view
+            data: engine_data.mustUploadAttachment == 1 ? '是':'否'
+    ui_Task_1yffhhu:
+      title: 工单创建
+      controls:
+        id:
+          ui:
+            widget: hidden
+            data: engine_data.id
+        title:
+          ui:
+            col: 12
+            widget: text
+          validate:
+            required: true
+            maxLength: 100
+        content:
+          ui:
+            widget: textarea
+            options:
+              rows: 5
+          validate:
+            maxLength: 800
+        is_audit:
+          ui:
+            widget: hidden
+            data: engine_data.auditor_1 != null ? 1:2
+        processLimited:
+          ui:
+            col: 6
+            widget: date
+            options:
+              displayType: datetime
+          validate:
+            required: true
+        type:
+          ui:
+            widget: hidden
+            data: 通用管理
+        superintendent_1:
+          ui:
+            widget: pop-person
+            options:
+              multiple: true
+          validate:
+            required: true
+        reviewers:
+          ui:
+            widget: pop-person
+            options:
+              multiple: true
+        auditor_1:
+          ui:
+            widget: pop-person
+            options:
+              multiple: false
+        data:
+          ui:
+            widget: file
+            options:
+              ext: .xls,.xlsx
+              multiple: false
+        files:
+          ui:
+            widget: file
+            options:
+              multiple: true
+        mustUploadAttachment:
+          ui:
+            widget: select
+            col: 6
+            data:
+            - {value: 1,label: 是}
+            - {value: 0,label: 否}
+          validate:
+            required: true
+    ui_Task_0uf0gw3:
+      title: 一级审核
+      controls:
+        approval_result_1:
+          ui:
+            col: 6
+            widget: select
+            data:
+            - {value: 1 ,label: 不通过}
+            - {value: 2 ,label: 通过，送二级审核}
+            - {value: 3 ,label: 通过，推送处理}
+          validate:
+            required: true
+        auditor_2:
+          ui:
+            widget: pop-person
+            options:
+              show: engine_data.approval_result_1 == 2
+        comment:
+          ui:
+            widget: comment
+    ui_Task_11jiij0:
+      title: 二级审核
+      controls:
+        approval_result_2:
+          ui:
+            col: 6
+            widget: select
+            data:
+            - {value: 1 ,label: 不通过}
+            - {value: 2 ,label: 通过，推送处理}
+          validate:
+            required: true
+        comment:
+          ui:
+            widget: comment
+    ui_Task_1rzfgf4:
+      title: 传阅查看
+      controls:
+        comment:
+          ui:
+            widget: comment
+    ui_Task_0ztbyj0:
+      title: 一级处理
+      controls:
+        supervise_result_1:
+          ui:
+            widget: hidden
+            data: engine_data.superintendent_2 == null ? 1:2
+        superintendent_2:
+          ui:
+            widget: pop-person
+            options:
+              multiple: false
+        attachments:
+          ui:
+            widget: file
+            options:
+              multiple: true
+          validate:
+            required: engine_data.superintendent_2 == null && engine_data.mustUploadAttachment == 1
+        comment:
+          ui:
+            widget: comment
+    ui_Task_05jni67:
+      title: 二级处理
+      controls:
+        supervise_result_2:
+          ui:
+            col: 6
+            widget: select
+            data:
+            - {value: 1 ,label: 处理完成}
+            - {value: 2 ,label: 送三级处理}
+            - {value: 3 ,label: 驳回一级处理}
+          validate:
+            required: true
+        superintendent_3:
+          ui:
+            widget: pop-person
+            options:
+              multiple: false
+          validate:
+            required: engine_data.supervise_result_2 == 2
+        attachments:
+          ui:
+            widget: file
+            options:
+              multiple: true
+          validate:
+            required: engine_data.superintendent_3 == null && engine_data.mustUploadAttachment == 1
+        comment:
+          ui:
+            widget: comment
+    ui_Task_0lklajl:
+      title: 三级处理
+      controls:
+        supervise_result_3:
+          ui:
+            col: 6
+            widget: select
+            data:
+            - {value: 1 ,label: 处理完成}
+            - {value: 2 ,label: 驳回二级处理}
+          validate:
+            required: true
+        attachments:
+          ui:
+            widget: file
+            options:
+              multiple: true
+          validate:
+            required: engine_data.mustUploadAttachment == 1
+        comment:
+          ui:
+            widget: comment
+    ui_Task_0l3cosh:
+      title: 二级处理人审核
+      controls:
+        supervise_approval_result_2:
+          ui:
+            widget: select
+            data:
+            - {value: 1 ,label: 通过}
+            - {value: 2 ,label: 不通过}
+          validate:
+            required: true
+        comment:
+          ui:
+            widget: comment
+    ui_Task_0zkp6z0:
+      title: 一级处理人审核
+      controls:
+        supervise_approval_result_1:
+          ui:
+            widget: select
+            data:
+            - {value: 1 ,label: 通过}
+            - {value: 2 ,label: 不通过}
+          validate:
+            required: true
+        comment:
+          ui:
+            widget: comment
+    ui_Task_0evk3j9:
+      title: 结果确认
+      controls:
+        confirm:
+          ui:
+            widget: select
+            data:
+            - {value: 1 ,label: 确认办结}
+            - {value: 2 ,label: 驳回处理}
+          validate:
+            required: true
+        superintendent_1:
+          ui:
+            widget: pop-candidate-back
+            options:
+              show: engine_data.confirm == 2
+              multiple: true
+              candidate: superintendent_1
+          validate:
+            required: engine_data.confirm == 2
+        comment:
+          ui:
+            widget: comment
+  default_ui:
+  - ui_view
+  tasks:
+    Task_1yffhhu:
+    - ui_Task_1yffhhu
+    Task_0uf0gw3:
+    - ui_view
+    - ui_Task_0uf0gw3
+    Task_11jiij0:
+    - ui_view
+    - ui_Task_11jiij0
+    Task_1rzfgf4:
+    - ui_view
+    - ui_Task_1rzfgf4
+    Task_0ztbyj0:
+    - ui_view
+    - ui_Task_0ztbyj0
+    Task_05jni67:
+    - ui_view
+    - ui_Task_05jni67
+    Task_0lklajl:
+    - ui_view
+    - ui_Task_0lklajl
+    Task_0l3cosh:
+    - ui_view
+    - ui_Task_0l3cosh
+    Task_0zkp6z0:
+    - ui_view
+    - ui_Task_0zkp6z0
+    Task_0evk3j9:
+    - ui_view
+    - ui_Task_0evk3j9

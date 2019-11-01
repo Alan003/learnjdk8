@@ -1,0 +1,171 @@
+title: 综资矫正配置
+type: object
+properties:
+  start_node: Task_0dq9s05
+  engine_variables:
+    title: 流转变量
+    type: object
+    properties:
+      workOrderName:
+        title: 工单名称
+        type: string
+      city:
+        title: 地市
+        type: string
+      objectType:
+        title: 对象类型
+        type: string
+      networkType:
+        title: 网络制式
+        type: string
+      reason:
+        title: 修改原因
+        type: string
+      remark:
+        title: 备注
+        type: string
+      cityAudit:
+        title: 审批结果
+        type: string
+      approver:
+        title: 审批人
+        type: string
+      approvalOpinion:
+        title: 审批意见
+        type: string
+      dataGrid:
+        title: 通用表格组件
+        type: object
+  ui_groups:
+    ui_view:
+      title: 工单详情
+      controls:
+        workOrderName:
+          ui:
+            widget: text-view
+        city:
+          ui:
+            widget: text-view
+        objectType:
+          ui:
+            widget: text-view
+        networkType:
+          ui:
+            widget: text-view
+        reason:
+          ui:
+            widget: text-view
+        remark:
+          ui:
+            widget: text-view
+        dataGrid:
+          ui:
+            widget: data-grid
+            value: engine_data.dataGrid
+            options:
+               readonly: true
+        cityAudit:
+          ui:
+            widget: text-view
+            data: engine_data.cityAudit== '是' ? '通过':'不通过'
+            options:
+              show: engine_data.cityAudit != null
+        approvalOpinion:
+          ui:
+            widget: text-view
+            options:
+              show: engine_data.approvalOpinion != null
+    ui_Task_0dq9s05:
+      title: 申请填写
+      controls:
+        workOrderName:
+          ui:
+            col: 10
+            widget: text
+            autofocus: true
+            emptyValue: 工单名称
+
+          validate:
+            required: true
+        city:
+          ui:
+            col: 10
+            widget: select-city
+          validate:
+            required: false
+        objectType:
+          ui:
+            col: 8
+            widget: select-common
+            options:
+                 url: https://nqi.gmcc.net:20443/dev-wfm-biz-assetmgmt/zzfix/queryObjectType
+                 method: GET
+          validate:
+            required: true
+        networkType:
+          ui:
+            col: 8
+            widget: select-common
+            options:
+                 param:
+                      type: engine_data.objectType
+                 url: https://nqi.gmcc.net:20443/dev-wfm-biz-assetmgmt/zzfix/queryNetworkType
+                 method: GET
+                 show: engine_data.objectType=='基站' || engine_data.objectType=='小区'  || engine_data.objectType=='场景检查-小区' || engine_data.objectType=='场景检查-基站' || engine_data.objectType=='EnodeBID'
+          validate:
+            required: true
+        reason:
+          ui:
+            col: 18
+            widget: textarea
+        remark:
+          ui:
+            col: 18
+            widget: textarea
+        approver:
+          ui:
+            widget: pop-person
+            col: 12
+            options:
+              multiple: false
+          validate:
+            required: true
+        dataGrid:
+          ui:
+            widget: data-grid
+            options:
+                url: https://nqi.gmcc.net:20443/dev-wfm-biz-assetmgmt/zzfix/queryDynamicColumn
+                method: POST
+                param:
+                    objectType: engine_data.objectType
+                    networkType: engine_data.networkType
+    ui_Task_10kzr2d:
+      title: 申请审批
+      controls:
+        cityAudit:
+          ui:
+            col: 8
+            widget: select
+            data:
+            - {value: 是,label: 通过}
+            - {value: 否,label: 不通过}
+          validate:
+            required: true
+        approvalOpinion:
+          ui:
+            widget: textarea
+          ui:
+            widget: gis-view
+            options:
+              longitude: engine_data.dataGrid.rawData[0].c2
+              latitude: engine_data.dataGrid.rawData[0].c3
+              label: '小区'
+              name: engine_data.dataGrid.rawData[0].c4
+  default_ui:
+  - ui_view
+  tasks:
+    Task_0dq9s05:
+    - ui_Task_0dq9s05
+    Task_10kzr2d:
+    - ui_view
+    - ui_Task_10kzr2d
