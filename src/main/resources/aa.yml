@@ -1,121 +1,120 @@
 title: 综资场景核查流程变量定义
-  type: object
+type: object
 properties:
   start_node: Task_1wwylrg
   # 定义要素
   engine_variables:
     title: 流转变量
-      type: object
+    type: object
     properties:
       wo_code:
         title: 工单流水号
-          type: string
+        type: string
       wo_createName:
         title: 工单创建人
-          type: string
+        type: string
       wo_creator:
         title: 工单推送人
-          type: string
+        type: string
       wo_createTime:
         title: 工单创建时间
-          type: string
+        type: string
       wo_id:
         title: 工单ID
-          type: string
+        type: string
       wo_dueDate:
         title: 工单处理时限
-          type: string
+        type: string
       wo_title:
         title: 工单全称
-          type: string
+        type: string
       zheng_fan_xiang:
         title: 正反向
-          type: string
+        type: string
       wang_luo_zhi_shi:
         title: 网络制式
-          type: string
+        type: string
       di_shi:
         title: 地市
-          type: string
+        type: string
       fu_gai_chang_jing:
         title: 覆盖场景
-          type: string
+        type: string
       dui_xiang_lei_xing:
         title: 对象类型
-          type: string
+        type: string
       shen_qing_yuan_yin:
         title: 申请原因
-          type: string
+        type: string
       shen_qing_ren:
         title: 申请人
-          type: string
+        type: string
       shen_qing_shi_jian:
         title: 申请时间
-          type: string
+        type: string
       que_ren_xiu_gai:
         title: 确认修改
-          type: string
+        type: string
       que_ren_xiu_gai_qing_kuang:
         title: 确认修改情况
-          type: string
+        type: string
       shi_gong_si_que_ren_ren:
         title: 市公司确认人
-          type: string
+        type: string
       shi_gong_si_que_ren_shi_jian:
         title: 市公司确认时间
-          type: string
+        type: string
       ji_zhan_xiu_gai_xin_xi:
         title: 基站修改信息
-          type: string
+        type: string
       xiao_qu_xiu_gai_xin_xi:
         title: 小区修改信息
-          type: string
+        type: string
       fan_xiang_xiao_qu_xiu_gai_xin_xi:
         title: 反向小区修改信息
-          type: string
+        type: string
       xin_ru_wang_xiao_qu_xin_xi:
         title: 新入网小区信息
-          type: string
+        type: string
       liu_cheng_cao_zuo_shuo_ming:
         title: 流程操作说明
-          type: string
+        type: string
       shu_ju_lai_yuan:
         title: 数据来源
-          type: string
+        type: string
       zhan_dian_xin_zeng_liu_shui_hao:
         title: 站点新增流水号
-          type: string
+        type: string
       shi_fou_zhong_yao_chang_jing:
         title: 是否重要场景
-          type: string
+        type: string
       xiao_qu_ming_cheng:
         title: 小区名称
-          type: string
+        type: string
       zhong_xin_jing_du:
         title: 中心经度
-          type: string
+        type: string
       zhong_xin_wei_du:
         title: 中心纬度
-          type: string
+        type: string
       shi_fou_xiu_gai_cheng_gong:
         title: 是否修改成功
-          type: string
+        type: string
       zhuang_tai_xiu_gai_qing_kuang:
         title: 状态修改情况
-          type: string
+        type: string
       bei_zhu:
         title: 备注
-          type: string
+        type: string
       sheng_gong_si_shen_he_jie_guo:
         title: 省公司审核结果
-          type: string
+        type: string
       sheng_gong_si_shen_he_jie_guo_qing_kuang:
         title: 省公司审核结果情况
-          type: string
-      attachment：
-        title: 附件
-          type: object
-      rawColumns:
+        type: string
+      attachment:
+        title: 附件详情
+        type: object
   # 表单组模板配置
   ui_groups:
     # 表单组模板，用于在环节中自由组合生成环节的动态表单
@@ -200,76 +199,12 @@ properties:
         bei_zhu:
           ui:
             widget: text-view
-        attachment：
+        attachment:
           ui:
             widget: data-grid
+            value: engine_data.attachment
             options:
-              value:
-                rawData: engine_data.attachment
-                rawColumns:
-                  - title: 操作
-                    slot: operation
-                    type: readonly
-                  - title: 不修改原因
-                    slot: notReviseCause
-                    type: readonly
-                  - title: 其他原因
-                    slot: otherCause
-                    type: readonly
-                  - title: CUID
-                    slot: cuid
-                    type: readonly
-                  - title: 地市
-                    slot: city
-                    type: readonly
-                  - title: 小区名称
-                    slot: community
-                    type: readonly
-                  - title: CGI
-                    slot: cgi
-                    type: readonly
-                  - title: 经度
-                    slot: longitude
-                    type: readonly
-                  - title: 纬度
-                    slot: latitude
-                    type: readonly
-                  - title: 综资覆盖场景
-                    slot: zzfgScene
-                    type: readonly
-                  - title: 五高一地两美标签
-                    slot: wgydlmTag
-                    type: readonly
-                  - title: 综资覆盖类型
-                    slot: zzfg    type
-                    type: readonly
-                  - title: 五高一地覆盖类型
-                    slot: wgydCover    type
-                    type: readonly
-                  - title: 五高一地场景名称
-                    slot: wgydSceneName
-                    type: readonly
-                  - title: 五高一地场景类别
-                    slot: wgydScene    type
-                    type: readonly
-                  - title: 数据来源
-                    slot: dataSource
-                    type: readonly
-                  - title: 是否室分外拉
-                    slot: isShiFenWaiLa
-                    type: readonly
-                  - title: 是否修改综资场景
-                    slot: isReviseZZScene
-                    type: readonly
-                  - title: 覆盖场景细化
-                    slot: coverSceneRefine
-                    type: readonly
-                  - title: 二级覆盖场景
-                    slot: secLvlCoverScene
-                    type: readonly
-                  - title: 二级覆盖场景细化
-                    slot: secLvlCoverSceneRefine
-                    type: readonly
+              readonly: true
     ui_Task_1vl0dxg:
       title: 省公司审核
       controls:
