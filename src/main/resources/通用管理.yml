@@ -1,386 +1,361 @@
-title: 通用管理流程变量定义
+title: 小区节电流程配置
 type: object
 properties:
-  start_node: Task_1yffhhu
-  save_path: https://nqi.gmcc.net:20443/dev-wfm-biz-server/supervise
+  start_node: Task_1c7rs4k
   engine_variables:
-    title: 流程引擎变量
+    title: 流转变量
     type: object
     properties:
-      id:
-        title: 工单ID
-        type: string
-      code:
-        title: 通告公文号
-        type: string
-      is_audit:
-        title: 审核选择
-        type: number
-      superintendent_1:
-        title: 处理对象
-        type: array
-      reviewers:
-        title: 抄送对象
-        type: array
-      auditor_1:
-        title: 审核对象
-        type: string
-      approval_result_1:
-        title: 一级审核结果
-        type: number
-      auditor_2:
-        title: 二级审核人
-        type: string
-      approval_result_2:
-        title: 二级审核结果
-        type: number
-      supervise_result_1:
-        title: 一级处理结果
-        type: number
-      superintendent_2:
-        title: 转派
-        type: string
-      supervise_result_2:
-        title: 二级处理结果
-        type: number
-      supervise_result_3:
-        title: 三级处理结果
-        type: number
-      superintendent_3:
-        title: 转派
-        type: string
-      supervise_approval_result_1:
-        title: 一级处理人审核结果
-        type: number
-      supervise_approval_result_2:
-        title: 二级处理人审核结果
-        type: number
-      confirm:
-        title: 确认结果
-        type: number
-      comment:
-        title: 处理意见
-        type: string
-      attachments:
-        title: 附件
-        type: array
-      title:
+      workOrderName:
         title: 工单标题
         type: string
-      content:
-        title: 工单内容
+      description:
+        title: 需求描述
         type: string
-      processLimited:
-        title: 处理时限
-        type: string
-      type:
-        title: 处理类型
-        type: string
-      data:
-        title: 数据
-        type: file
       files:
-        title: 附件
+        title: 节电任务清单上传
         type: file
-      mustUploadAttachment:
-        title: 处理是否要上传附件
-        type: number
+      startUnit:
+        title: 发起单位
+        type: string
+      communityNumber:
+        title: 小区数量
+        type: long
+      operationType:
+        title: 操作类别
+        type: string
+      aboutCity:
+        title: 涉及城市
+        type: string
+      aboutFactory:
+        title: 涉及厂家
+        type: string
+      city_principal:
+        title: 市公司审核人
+        type: string
+      city_principal_result:
+        title: 市公司审核结果
+        type: string
+      province_principal:
+        title: 省公司审核人
+        type: string
+      province_principal_result:
+        title: 省公司审核结果
+        type: string
+      province_director:
+        title: 省主任审核人
+        type: string
+      province_director_result:
+        title: 省主任审核结果
+        type: string
+      province_leader:
+        title: 省领导审核
+        type: string
+      province_leader_result:
+        title: 省领导审核结果
+        type: string
+      pause:
+        title: 暂停
+        type: long
   ui_groups:
-    ui_view:
-      title: 工单详情
-      controls:
-        code:
-          ui:
-            widget: text-view
-        title:
-          ui:
-            widget: text-view
-        content:
-          ui:
-            widget: text-view
-        processLimited:
-          ui:
-            widget: text-view
-        data:
-          ui:
-            widget: supervise-data-view
-        files:
-          ui:
-            widget: attachment-view
-        mustUploadAttachment:
-          ui:
-            widget: text-view
-            data: engine_data.mustUploadAttachment == 1 ? '是':'否'
-    ui_Task_1yffhhu:
+    create_ui_view:
       title: 工单创建
       controls:
-        id:
+        workOrderName:
           ui:
-            widget: hidden
-            data: engine_data.id
-        title:
-          ui:
-            col: 12
             widget: text
+            col: 24
           validate:
             required: true
-            maxLength: 100
-        content:
+            maxLength: 200
+        description:
           ui:
             widget: textarea
-            options:
-              rows: 5
-          validate:
-            maxLength: 800
-        is_audit:
-          ui:
-            widget: hidden
-            data: engine_data.auditor_1 != null ? 1:2
-        processLimited:
-          ui:
-            col: 6
-            widget: date
-            options:
-              displayType: datetime
+            col: 24
           validate:
             required: true
-        type:
-          ui:
-            widget: hidden
-            data: 通用管理
-        superintendent_1:
+        city_principal:
           ui:
             widget: pop-person
+            col: 24
             options:
-              multiple: true
+              multiple: false
+              show: engine_data.startUnit=='市公司'
           validate:
             required: true
-        reviewers:
+        province_principal:
           ui:
             widget: pop-person
+            col: 24
             options:
-              multiple: true
-        auditor_1:
+              multiple: false
+              show: engine_data.startUnit=='省公司'
+          validate:
+            required: true
+    details_ui_view:
+      title: 节电任务详情
+      controls:
+        startUnit:
+          ui:
+            widget: select
+            data:
+            - {value: 市公司 ,label: 市公司}
+            - {value: 省公司 ,label: 省公司}
+            col: 8
+          validate:
+            required: true
+        communityNumber:
+          ui:
+            widget: text-view
+            col: 8
+            data: engine_data.files==null? '':engine_data.files.dataTotalRowCount
+        operationType:
+          ui:
+            widget: text-view
+            col: 8
+            data: engine_data.files==null? '':engine_data.files.listType.join('，')
+        aboutCity:
+          ui:
+            widget: text-view
+            col: 24
+            data: engine_data.files==null? '':engine_data.files.city.join('，')
+        aboutFactory:
+          ui:
+            widget: text-view
+            col: 24
+            data: engine_data.files==null? '':engine_data.files.deviceFactory.join('，')
+        pause:
+          ui:
+            widget: hidden
+            data: engine_data.files==null? 3:engine_data.files.pauseOnly
+    city_principal_ui_view:
+      title: 市公司审核
+      controls:
+        city_principal_result:
+          ui:
+            col: 24
+            widget: select
+            data:
+            - {value: 不通过 ,label: 不通过}
+            - {value: 通过 ,label: 通过}
+          validate:
+            required: true
+        province_principal:
           ui:
             widget: pop-person
+            col: 12
             options:
               multiple: false
-        data:
+              show: engine_data.city_principal_result=='通过'
+          validate:
+            required: true
+    province_principal_ui_view:
+      title: 省公司审核
+      controls:
+        province_principal_result:
           ui:
-            widget: file
+            col: 24
+            widget: select
+            data:
+            - {value: 不通过 ,label: 不通过}
+            - {value: 通过 ,label: 通过}
+          validate:
+            required: true
+        province_director:
+          ui:
+            widget: pop-person
+            col: 12
             options:
-              ext: .xls,.xlsx
               multiple: false
+              show: engine_data.communityNumber>=10000 && engine_data.province_principal_result=='通过'
+          validate:
+            required: true
+    province_director_ui_view:
+      title: 省主任审核
+      controls:
+        province_director_result:
+          ui:
+            col: 24
+            widget: select
+            data:
+            - {value: 不通过 ,label: 不通过}
+            - {value: 通过 ,label: 通过}
+          validate:
+            required: true
+        province_leader:
+          ui:
+            widget: pop-person
+            col: 12
+            options:
+              multiple: false
+              show: engine_data.communityNumber>=100000 && engine_data.province_director_result=='通过'
+          validate:
+            required: true
+    province_leader_ui_view:
+      title: 省领导审核
+      controls:
+        province_leader_result:
+          ui:
+            col: 24
+            widget: select
+            data:
+            - {value: 不通过 ,label: 不通过}
+            - {value: 通过 ,label: 通过}
+          validate:
+            required: true
+    create_details_ui_view:
+      title: 工单详情
+      controls:
+        workOrderName:
+          ui:
+            widget: text-view
+        description:
+          ui:
+            widget: text-view
         files:
           ui:
-            widget: file
+            widget: jdgl-excel-upload
             options:
-              multiple: true
-        mustUploadAttachment:
+              value: engine_data.files
+        startUnit:
           ui:
-            widget: select
-            col: 6
-            data:
-            - {value: 1,label: 是}
-            - {value: 0,label: 否}
-          validate:
-            required: true
-    ui_Task_0uf0gw3:
-      title: 一级审核
+            widget: text-view
+            col: 8
+        communityNumber:
+          ui:
+            widget: text-view
+            col: 8
+        operationType:
+          ui:
+            widget: text-view
+            col: 8
+        aboutCity:
+          ui:
+            widget: text-view
+            col: 24
+        aboutFactory:
+          ui:
+            widget: text-view
+            col: 24
+    city_principal_check_ui_view:
+      title: 市公司审核详情
       controls:
-        approval_result_1:
+        city_principal_result:
           ui:
-            col: 6
-            widget: select
-            data:
-            - {value: 1 ,label: 不通过}
-            - {value: 2 ,label: 通过，送二级审核}
-            - {value: 3 ,label: 通过，推送处理}
-          validate:
-            required: true
-        auditor_2:
+            widget: text-view
+            col: 12
+        city_principal:
           ui:
-            widget: pop-person
+            widget: text-view
+            col: 12
+    province_principal_check_ui_view:
+      title: 省公司审核详情
+      controls:
+        province_principal_result:
+          ui:
+            widget: text-view
+            col: 12
+        province_principal:
+          ui:
+            widget: text-view
+            col: 12
+    province_director_check_ui_view:
+      title: 省主任审核详情
+      controls:
+        province_director_result:
+          ui:
+            widget: text-view
+            col: 12
+        province_director:
+          ui:
+            widget: text-view
+            col: 12
+    province_leader_check_ui_view:
+      title: 省领导审核详情
+      controls:
+        province_leader_result:
+          ui:
+            widget: text-view
+            col: 12
+        province_leader:
+          ui:
+            widget: text-view
+            col: 12
+    check_ui_view:
+      title: 审核详情
+      controls:
+        city_principal_result:
+          ui:
+            widget: text-view
+            col: 12
             options:
-              show: engine_data.approval_result_1 == 2
-        comment:
+              show: engine_data.startUnit=='市公司'
+        city_principal:
           ui:
-            widget: comment
-    ui_Task_11jiij0:
-      title: 二级审核
-      controls:
-        approval_result_2:
-          ui:
-            col: 6
-            widget: select
-            data:
-            - {value: 1 ,label: 不通过}
-            - {value: 2 ,label: 通过，推送处理}
-          validate:
-            required: true
-        comment:
-          ui:
-            widget: comment
-    ui_Task_1rzfgf4:
-      title: 传阅查看
-      controls:
-        comment:
-          ui:
-            widget: comment
-    ui_Task_0ztbyj0:
-      title: 一级处理
-      controls:
-        supervise_result_1:
-          ui:
-            widget: hidden
-            data: engine_data.superintendent_2 == null ? 1:2
-        superintendent_2:
-          ui:
-            widget: pop-person
+            widget: text-view
+            col: 12
             options:
-              multiple: false
-        attachments:
+              show: engine_data.startUnit=='市公司'
+        province_principal_result:
           ui:
-            widget: file
+            widget: text-view
+            col: 12
             options:
-              multiple: true
-          validate:
-            required: engine_data.superintendent_2 == null && engine_data.mustUploadAttachment == 1
-        comment:
+              show: engine_data.province_principal_result !=null
+        province_principal:
           ui:
-            widget: comment
-    ui_Task_05jni67:
-      title: 二级处理
-      controls:
-        supervise_result_2:
-          ui:
-            col: 6
-            widget: select
-            data:
-            - {value: 1 ,label: 处理完成}
-            - {value: 2 ,label: 送三级处理}
-            - {value: 3 ,label: 驳回一级处理}
-          validate:
-            required: true
-        superintendent_3:
-          ui:
-            widget: pop-person
+            widget: text-view
+            col: 12
             options:
-              multiple: false
-          validate:
-            required: engine_data.supervise_result_2 == 2
-        attachments:
+              show: engine_data.province_principal !=null
+        province_director_result:
           ui:
-            widget: file
+            widget: text-view
+            col: 12
             options:
-              multiple: true
-          validate:
-            required: engine_data.superintendent_3 == null && engine_data.mustUploadAttachment == 1
-        comment:
+              show: engine_data.province_director_result !=null
+        province_director:
           ui:
-            widget: comment
-    ui_Task_0lklajl:
-      title: 三级处理
-      controls:
-        supervise_result_3:
-          ui:
-            col: 6
-            widget: select
-            data:
-            - {value: 1 ,label: 处理完成}
-            - {value: 2 ,label: 驳回二级处理}
-          validate:
-            required: true
-        attachments:
-          ui:
-            widget: file
+            widget: text-view
+            col: 12
             options:
-              multiple: true
-          validate:
-            required: engine_data.mustUploadAttachment == 1
-        comment:
+              show: engine_data.province_director !=null
+        province_leader_result:
           ui:
-            widget: comment
-    ui_Task_0l3cosh:
-      title: 二级处理人审核
-      controls:
-        supervise_approval_result_2:
-          ui:
-            widget: select
-            data:
-            - {value: 1 ,label: 通过}
-            - {value: 2 ,label: 不通过}
-          validate:
-            required: true
-        comment:
-          ui:
-            widget: comment
-    ui_Task_0zkp6z0:
-      title: 一级处理人审核
-      controls:
-        supervise_approval_result_1:
-          ui:
-            widget: select
-            data:
-            - {value: 1 ,label: 通过}
-            - {value: 2 ,label: 不通过}
-          validate:
-            required: true
-        comment:
-          ui:
-            widget: comment
-    ui_Task_0evk3j9:
-      title: 结果确认
-      controls:
-        confirm:
-          ui:
-            widget: select
-            data:
-            - {value: 1 ,label: 确认办结}
-            - {value: 2 ,label: 驳回处理}
-          validate:
-            required: true
-        superintendent_1:
-          ui:
-            widget: pop-candidate-back
+            widget: text-view
+            col: 12
             options:
-              show: engine_data.confirm == 2
-              multiple: true
-              candidate: superintendent_1
-          validate:
-            required: engine_data.confirm == 2
-        comment:
+              show: engine_data.province_leader_result !=null
+        province_leader:
           ui:
-            widget: comment
+            widget: text-view
+            col: 12
+            options:
+              show: engine_data.province_leader !=null
+
   default_ui:
-  - ui_view
+    - create_details_ui_view
+    - check_ui_view
   tasks:
-    Task_1yffhhu:
-    - ui_Task_1yffhhu
-    Task_0uf0gw3:
-    - ui_view
-    - ui_Task_0uf0gw3
-    Task_11jiij0:
-    - ui_view
-    - ui_Task_11jiij0
-    Task_1rzfgf4:
-    - ui_view
-    - ui_Task_1rzfgf4
-    Task_0ztbyj0:
-    - ui_view
-    - ui_Task_0ztbyj0
-    Task_05jni67:
-    - ui_view
-    - ui_Task_05jni67
-    Task_0lklajl:
-    - ui_view
-    - ui_Task_0lklajl
-    Task_0l3cosh:
-    - ui_view
-    - ui_Task_0l3cosh
-    Task_0zkp6z0:
-    - ui_view
-    - ui_Task_0zkp6z0
-    Task_0evk3j9:
-    - ui_view
-    - ui_Task_0evk3j9
+    Task_1c7rs4k:
+    - create_ui_view
+    - details_ui_view
+    Task_1jp3ezo:
+    - create_details_ui_view
+    - city_principal_ui_view
+    Task_19buuol:
+    - create_details_ui_view
+    - check_ui_view
+    - province_principal_ui_view
+    Task_1of5daj:
+    - create_details_ui_view
+    - check_ui_view
+    - province_director_ui_view
+    Task_1e8eqcp:
+    - create_details_ui_view
+    - check_ui_view
+    - province_director_ui_view
+    Task_14c6033:
+    - create_details_ui_view
+    - check_ui_view
+    - province_leader_ui_view
