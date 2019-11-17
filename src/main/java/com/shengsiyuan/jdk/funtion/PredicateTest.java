@@ -1,3 +1,5 @@
+package com.shengsiyuan.jdk.funtion;
+
 import com.alibaba.fastjson.JSON;
 
 import java.util.HashSet;

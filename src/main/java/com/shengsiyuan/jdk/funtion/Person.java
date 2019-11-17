@@ -1,3 +1,5 @@
+package com.shengsiyuan.jdk.funtion;
+
 public class Person {
 	private String username;
 

@@ -1,3 +1,5 @@
+package com.shengsiyuan.jdk.funtion;
+
 import java.util.function.Function;
 
 public class FuntionTest {

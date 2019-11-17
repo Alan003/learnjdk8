@@ -13,7 +13,7 @@ properties:
         title: 需求描述
         type: string
       files:
-        title: 节电任务清单
+        title: 节电任务清单上传
         type: file
       org_type_readOnly:
         title: 发起单位
@@ -72,6 +72,12 @@ properties:
       pause:
         title: 暂停
         type: long
+      templateDownload:
+        title: 模板下载
+        type: array
+      org_type_cn:
+        title: 发起单位中文名称
+        type: string
   ui_groups:
     create_ui_view:
       title: 工单创建
@@ -96,24 +102,11 @@ properties:
               show: true
           validate:
             required: true
-        city_jd_auditors:
+        templateDownload:
           ui:
-            widget: pop-person
+            widget: hyperlink-view
             col: 24
-            options:
-              multiple: false
-              show: engine_data.org_type==3
-          validate:
-            required: true
-        province_jd_auditors:
-          ui:
-            widget: pop-person
-            col: 24
-            options:
-              multiple: false
-              show: engine_data.org_type==2
-          validate:
-            required: true
+            data: [{"url": "https://nqi.gmcc.net:20443/dev-wfm-biz-jdgl/file/download/891fcdf8a3544d749dd8de57181ad517","label": "节电管理小区关断清单模板下载"}]
     details_ui_view:
       title: 节电任务详情
       controls:
@@ -165,6 +158,10 @@ properties:
           ui:
             widget: hidden
             data: engine_data.files==null? '':engine_data.files.deviceFactory.join('，')
+        org_type_cn:
+          ui:
+            widget: hidden
+            data: engine_data.org_type==2?'省公司':engine_data.org_type==3?'市公司':''
     city_jd_auditors_ui_view:
       title: 市公司审核
       controls:
@@ -175,15 +172,6 @@ properties:
             data:
             - {value: 1 ,label: 不通过}
             - {value: 2 ,label: 通过}
-          validate:
-            required: true
-        province_jd_auditors:
-          ui:
-            widget: pop-person
-            col: 12
-            options:
-              multiple: false
-              show: engine_data.city_jd_auditor_result==2
           validate:
             required: true
     province_jd_auditors_ui_view:
@@ -198,15 +186,6 @@ properties:
             - {value: 2 ,label: 通过}
           validate:
             required: true
-        directors:
-          ui:
-            widget: pop-person
-            col: 12
-            options:
-              multiple: false
-              show: engine_data.cell_num>=10000 && engine_data.province_jd_auditor_result==2
-          validate:
-            required: true
     director_ui_view:
       title: 省公司优化主任审核
       controls:
@@ -217,15 +196,6 @@ properties:
             data:
             - {value: 1 ,label: 不通过}
             - {value: 2 ,label: 通过}
-          validate:
-            required: true
-        leaders:
-          ui:
-            widget: pop-person
-            col: 12
-            options:
-              multiple: false
-              show: engine_data.cell_num>=100000 && engine_data.director_approve_result==2
           validate:
             required: true
     province_leader_ui_view:
@@ -251,10 +221,9 @@ properties:
             widget: text-view
         files:
           ui:
-            widget: jdgl-excel-upload
-            options:
-              value: engine_data.files
-              readonly: true
+            widget: hyperlink-view
+            col: 24
+            data: '[{"url":engine_data.files.url,"label":engine_data.files.name}]'
         org_type_readOnly:
           ui:
             widget: text-view
