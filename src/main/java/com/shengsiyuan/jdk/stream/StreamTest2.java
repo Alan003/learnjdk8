@@ -10,7 +10,7 @@ import java.util.stream.Stream;
 public class StreamTest2 {
     public static void main(String[] args) {
         Stream<String> stream = Stream.of("hello","world","hello world");
-        String[] strings = stream.toArray(length -> new String[length]);
+    //    String[] strings = stream.toArray(length -> new String[length]);
 //        String[] strings = stream.toArray(String[]::new);
 //        Arrays.asList(strings).forEach(System.out::println);
 

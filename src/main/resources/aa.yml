@@ -51,24 +51,36 @@ properties:
       city_jd_auditor_result:
         title: 市公司节电负责人审核结果
         type: number
+      city_jd_auditor_opinion:
+        title: 市公司节电负责人审核意见
+        type: string
       province_jd_auditors:
         title: 省公司节电负责人
         type: string
       province_jd_auditor_result:
         title: 省公司节电负责人审核结果
         type: number
+      province_jd_auditor_opinion:
+        title: 省公司节电负责人审核意见
+        type: string
       directors:
         title: 省公司优化主任
         type: string
       director_approve_result:
         title: 省公司优化主任审核结果
         type: number
+      director_approve_opinion:
+        title: 省公司优化主任审核意见
+        type: string
       leaders:
         title: 省公司优化中心领导
         type: string
       leader_approve_result:
         title: 省公司优化中心领导审核结果
         type: number
+      leader_approve_opinion:
+        title: 省公司优化中心领导审核意见
+        type: string
       pause:
         title: 暂停
         type: long
@@ -162,54 +174,102 @@ properties:
           ui:
             widget: hidden
             data: engine_data.org_type==2?'省公司':engine_data.org_type==3?'市公司':''
+        city_jd_auditor_opinion:
+          ui:
+            widget: text-view
+            col: 24
+            options:
+              show: engine_data.city_jd_auditor_opinion !=null
+        province_jd_auditor_opinion:
+          ui:
+            widget: text-view
+            col: 24
+            options:
+              show: engine_data.province_jd_auditor_opinion !=null
+        director_approve_opinion:
+          ui:
+            widget: text-view
+            col: 24
+            options:
+              show: engine_data.director_approve_opinion !=null
+        leader_approve_opinion:
+          ui:
+            widget: text-view
+            col: 24
+            options:
+              show: engine_data.leader_approve_opinion !=null
     city_jd_auditors_ui_view:
       title: 市公司审核
       controls:
         city_jd_auditor_result:
           ui:
-            col: 24
+            col: 12
             widget: select
             data:
             - {value: 1 ,label: 不通过}
             - {value: 2 ,label: 通过}
           validate:
             required: true
+        city_jd_auditor_opinion:
+          ui:
+            widget: textarea
+            col: 24
+          validate:
+            maxLength: 400
     province_jd_auditors_ui_view:
       title: 省公司审核
       controls:
         province_jd_auditor_result:
           ui:
-            col: 24
+            col: 12
             widget: select
             data:
             - {value: 1 ,label: 不通过}
             - {value: 2 ,label: 通过}
           validate:
             required: true
+        province_jd_auditor_opinion:
+          ui:
+            widget: textarea
+            col: 24
+          validate:
+            maxLength: 400
     director_ui_view:
       title: 省公司优化主任审核
       controls:
         director_approve_result:
           ui:
-            col: 24
+            col: 12
             widget: select
             data:
             - {value: 1 ,label: 不通过}
             - {value: 2 ,label: 通过}
           validate:
             required: true
+        director_approve_opinion:
+          ui:
+            widget: textarea
+            col: 24
+          validate:
+            maxLength: 400
     province_leader_ui_view:
       title: 省领导审核
       controls:
         leader_approve_result:
           ui:
-            col: 24
+            col: 12
             widget: select
             data:
             - {value: 1 ,label: 不通过}
             - {value: 2 ,label: 通过}
           validate:
             required: true
+        leader_approve_opinion:
+          ui:
+            widget: textarea
+            col: 24
+          validate:
+            maxLength: 400
     create_details_ui_view:
       title: 工单详情
       controls:
