@@ -118,7 +118,7 @@ properties:
           ui:
             widget: hyperlink-view
             col: 24
-            data: [{"url": "https://nqi.gmcc.net:20443/dev-wfm-biz-jdgl/file/download/891fcdf8a3544d749dd8de57181ad517","label": "节电管理小区关断清单模板下载"}]
+            data: [{"url": "https://nqi.gmcc.net:20443/pre-wfm-biz-jdgl/file/download/d814089beac04c58913d7104c235f4c6","label": "节电管理小区关断清单模板下载"}]
     details_ui_view:
       title: 节电任务详情
       controls:
@@ -203,7 +203,7 @@ properties:
       controls:
         city_jd_auditor_result:
           ui:
-            col: 12
+            col: 10
             widget: select
             data:
             - {value: 1 ,label: 不通过}
@@ -221,7 +221,7 @@ properties:
       controls:
         province_jd_auditor_result:
           ui:
-            col: 12
+            col: 10
             widget: select
             data:
             - {value: 1 ,label: 不通过}
@@ -239,7 +239,7 @@ properties:
       controls:
         director_approve_result:
           ui:
-            col: 12
+            col: 10
             widget: select
             data:
             - {value: 1 ,label: 不通过}
@@ -257,7 +257,7 @@ properties:
       controls:
         leader_approve_result:
           ui:
-            col: 12
+            col: 10
             widget: select
             data:
             - {value: 1 ,label: 不通过}
