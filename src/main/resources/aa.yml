@@ -81,6 +81,9 @@ properties:
       leader_approve_opinion:
         title: 省公司优化中心领导审核意见
         type: string
+      creator_approve_result:
+        title: 用户确认结束结果
+        type: number
       pause:
         title: 暂停
         type: long
@@ -118,7 +121,7 @@ properties:
           ui:
             widget: hyperlink-view
             col: 24
-            data: [{"url": "https://nqi.gmcc.net:20443/pre-wfm-biz-jdgl/file/download/d814089beac04c58913d7104c235f4c6","label": "节电管理小区关断清单模板下载"}]
+            data: [{"url": "https://nqi.gmcc.net:20443/dev-wfm-biz-jdgl/file/download/891fcdf8a3544d749dd8de57181ad517","label": "节电管理小区关断清单模板下载"}]
     details_ui_view:
       title: 节电任务详情
       controls:
@@ -203,7 +206,7 @@ properties:
       controls:
         city_jd_auditor_result:
           ui:
-            col: 10
+            col: 12
             widget: select
             data:
             - {value: 1 ,label: 不通过}
@@ -221,7 +224,7 @@ properties:
       controls:
         province_jd_auditor_result:
           ui:
-            col: 10
+            col: 12
             widget: select
             data:
             - {value: 1 ,label: 不通过}
@@ -239,7 +242,7 @@ properties:
       controls:
         director_approve_result:
           ui:
-            col: 10
+            col: 12
             widget: select
             data:
             - {value: 1 ,label: 不通过}
@@ -257,7 +260,7 @@ properties:
       controls:
         leader_approve_result:
           ui:
-            col: 10
+            col: 12
             widget: select
             data:
             - {value: 1 ,label: 不通过}
@@ -400,7 +403,18 @@ properties:
             col: 12
             options:
               show: engine_data.leaders !=null
-
+    creator_ui_view:
+      title: 用户确认结束
+      controls:
+        creator_approve_result:
+          ui:
+            col: 12
+            widget: select
+            data:
+            - {value: 1 ,label: 不通过}
+            - {value: 2 ,label: 通过}
+          validate:
+            required: true
   default_ui:
     - create_details_ui_view
   tasks:
@@ -419,3 +433,6 @@ properties:
     Task_14c6033:
     - create_details_ui_view
     - province_leader_ui_view
+    Task_15858rp:
+    - create_details_ui_view
+    - creator_ui_view
